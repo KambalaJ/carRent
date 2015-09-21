@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - car_service@localhost" uuid="9993981c-bebd-4faf-af07-0b84d270de40">
+    <database-info product="MySQL" version="5.6.26-enterprise-commercial-advanced-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="car_service"/>
+    <table name="car" schema="" catalog="car_service" type="TABLE">
+      <column name="vin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="year" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="model_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="vin"/>
+      <foreign-key name="fk_car_model1" columns="model_id" ref-table="model" ref-schema="" ref-catalog="car_service" ref-columns="id_model" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_order_car1" table="order" schema="" catalog="car_service" columns="car_vin"/>
+      <index name="vin_UNIQUE" unique="true" columns="vin"/>
+      <index name="fk_car_model1_idx" unique="false" columns="model_id"/>
+    </table>
+    <table name="client" schema="" catalog="car_service" type="TABLE">
+      <column name="id_client" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="first_name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_of_birth" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="address" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="phone" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_client"/>
+      <exported-key name="fk_order_client" table="order" schema="" catalog="car_service" columns="client_id"/>
+      <index name="id_client_UNIQUE" unique="true" columns="id_client"/>
+    </table>
+    <table name="maker" schema="" catalog="car_service" type="TABLE">
+      <column name="id_maker" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_maker"/>
+      <exported-key name="fk_model_maker1" table="model" schema="" catalog="car_service" columns="maker_id_maker"/>
+    </table>
+    <table name="model" schema="" catalog="car_service" type="TABLE">
+      <column name="id_model" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="maker_id_maker" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id_model"/>
+      <foreign-key name="fk_model_maker1" columns="maker_id_maker" ref-table="maker" ref-schema="" ref-catalog="car_service" ref-columns="id_maker" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_car_model1" table="car" schema="" catalog="car_service" columns="model_id"/>
+      <index name="fk_model_maker1_idx" unique="false" columns="maker_id_maker"/>
+    </table>
+    <table name="order" schema="" catalog="car_service" type="TABLE">
+      <column name="id_order" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="amount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="client_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="car_vin" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="status_order_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id_order"/>
+      <foreign-key name="fk_order_car1" columns="car_vin" ref-table="car" ref-schema="" ref-catalog="car_service" ref-columns="vin" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_order_client" columns="client_id" ref-table="client" ref-schema="" ref-catalog="car_service" ref-columns="id_client" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_order_status_order1" columns="status_order_id" ref-table="status_order" ref-schema="" ref-catalog="car_service" ref-columns="id_status" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="id_order_UNIQUE" unique="true" columns="id_order"/>
+      <index name="fk_order_car1_idx" unique="false" columns="car_vin"/>
+      <index name="fk_order_client_idx" unique="false" columns="client_id"/>
+      <index name="fk_order_status_order1_idx" unique="false" columns="status_order_id"/>
+    </table>
+    <table name="status_order" schema="" catalog="car_service" type="TABLE">
+      <column name="id_status" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="value" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id_status"/>
+      <exported-key name="fk_order_status_order1" table="order" schema="" catalog="car_service" columns="status_order_id"/>
+    </table>
+  </data-source>
+</component>
